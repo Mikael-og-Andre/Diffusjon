@@ -20,10 +20,14 @@ public class Cell {
     public void addParticle(Particle particle){
         particles.add(particle);
     }
+    public void removeParticle(Particle particle){
+        particles.remove(particle);
+    }
 
     public void moveParticle(Cell cell, Particle particle){
         if(checkIfCellInNeighbours(cell)){
-
+            this.addParticle(particle);
+            cell.removeParticle(particle);
         }
     }
 
@@ -34,6 +38,7 @@ public class Cell {
 
     public void simulateOneStep(){
         //System.out.println("Cell at X "+cellLocation.getXCord()+" Y "+cellLocation.getYCord()+" has been simulated");
+
     }
 
     public boolean checkIfCellInNeighbours(Cell cell){

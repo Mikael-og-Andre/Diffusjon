@@ -21,20 +21,10 @@ public class Grid {
         setupGrid();
     }
 
-    public Cell getCellByCords(int x, int y){
-        return grid[x][y];
-    }
-
     //Spawns cells and makes grid array
     public void setupGrid(){
         initCellsInGrid();
         assignNeighbourCells();
-    }
-
-    private void populateCell(int amount, Cell cell) {
-        for (int i = 0; i<amount; i++){
-            cell.addParticle(new Particle(cell.getCellLocation()));
-        }
     }
 
     public Cell getCell(int x, int y){
