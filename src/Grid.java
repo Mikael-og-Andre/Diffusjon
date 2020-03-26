@@ -1,10 +1,12 @@
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Grid {
 
     private Cell[][] grid;
     private int gridLength;
     private int gridHeight;
+    private Randomizer randomizer;
 
     public int getGridLength() {
         return gridLength;
@@ -14,10 +16,11 @@ public class Grid {
         return gridHeight;
     }
 
-    public Grid(int gridLength, int gridHeight){
+    public Grid(int gridLength, int gridHeight, Randomizer randomizer){
         grid = new Cell[gridLength][gridHeight];
         this.gridLength = gridLength;
         this.gridHeight = gridHeight;
+        this.randomizer = randomizer;
         setupGrid();
     }
 
@@ -40,7 +43,7 @@ public class Grid {
         for(int x = 0; x<gridLength; x++){
             for(int y = 0; y<gridHeight; y++){
                 Location loc = new Location(x,y);
-                Cell cell = new Cell(loc);
+                Cell cell = new Cell(loc,randomizer);
                 grid[x][y] = cell;
             }
         }
@@ -51,10 +54,12 @@ public class Grid {
         for(int x = 0; x<gridLength; x++){
             for(int y = 0; y<gridHeight; y++){
                 Cell currentCell = grid[x][y];
-                ArrayList<Location> neighbours = Location.getNeighbourCordsWalled(currentCell.getCellLocation(),gridLength,gridHeight);
-                for (Location l:
-                        neighbours) {
-                    currentCell.addNeighbouringCell(grid[l.getXCord()][l.getYCord()]);
+                HashMap<Neighbours,Location> neighbours = Location.getNeighbourCordsWalled(currentCell.getCellLocation(),gridLength,gridHeight);
+                for(Map.Entry<Neighbours, Location> entry : neighbours.entrySet()) {
+                    Neighbours key = entry.getKey();
+                    Location location = entry.getValue();
+
+                    currentCell.addNeighbouringCell(key,this.getCell(location));
                 }
             }
         }

@@ -9,15 +9,28 @@ public class Simulator {
     //grid
     private Grid grid;
 
-    public Simulator(int gridLength, int gridHeight){
-        grid = new Grid(gridLength,gridHeight);
-        populateCell((gridLength/2),gridHeight/2,10);
+    //Time
+    private int time;
+
+    //Visuals
+    private SimulatorView simView;
+
+    public Simulator(int gridLength, int gridHeight,long seed){
+        grid = new Grid(gridLength,gridHeight,new Randomizer(seed));
+        simView = new SimulatorView(grid);
+        populateCell((gridLength/2),gridHeight/2,1);
+        time = 0;
     }
 
 
     public void simulateSteps(int steps) {
         for(int i = 0; i<steps; i++){
             simulateOneStep();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -28,6 +41,8 @@ public class Simulator {
                 currentCell.simulateOneStep();
             }
         }
+        simView.showStatus(time,grid);
+        time++;
     }
 
     public void populateCell(int x,int y,int amount){
