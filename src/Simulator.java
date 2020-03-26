@@ -30,11 +30,7 @@ public class Simulator {
     public void simulateSteps(int steps) {
         for(int i = 0; i<steps; i++){
             simulateOneStep();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 

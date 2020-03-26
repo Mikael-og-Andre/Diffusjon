@@ -59,12 +59,9 @@ public class SimulatorView extends JFrame
         int particlesInCell = cell.getParticleCount();
 
         if (particlesInCell<1) return new Color(255,255,255);
-        if (particlesInCell<(totalPop/100)) return  new Color(255,200,200);
-        else if (particlesInCell<(totalPop/90)) return new Color(255,120,120);
-        else if (particlesInCell<(totalPop/80)) return new Color(255,100,100);
-        else if (particlesInCell<(totalPop/70)) return new Color(255,70,70);
-        else if (particlesInCell<(totalPop/60)) return new Color(255,45,45);
-        else if (particlesInCell<(totalPop/50)) return new Color(255,10,10);
+        if (particlesInCell<=1) return  new Color(255,200,200);
+        else if (particlesInCell<=5) return new Color(255,100,40);
+        else if (particlesInCell<=totalPop/10) return new Color(255,0,0);
         else return new Color(255,0,0);
     }
 
