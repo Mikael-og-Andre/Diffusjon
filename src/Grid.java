@@ -7,6 +7,7 @@ public class Grid {
     private int gridLength;
     private int gridHeight;
     private Randomizer randomizer;
+    private Probabilities probabilities;
 
     public int getGridLength() {
         return gridLength;
@@ -16,11 +17,12 @@ public class Grid {
         return gridHeight;
     }
 
-    public Grid(int gridLength, int gridHeight, Randomizer randomizer){
+    public Grid(int gridLength, int gridHeight, Randomizer randomizer, Probabilities probabilities){
         grid = new Cell[gridLength][gridHeight];
         this.gridLength = gridLength;
         this.gridHeight = gridHeight;
         this.randomizer = randomizer;
+        this.probabilities = probabilities;
         setupGrid();
     }
 
@@ -43,7 +45,7 @@ public class Grid {
         for(int x = 0; x<gridLength; x++){
             for(int y = 0; y<gridHeight; y++){
                 Location loc = new Location(x,y);
-                Cell cell = new Cell(loc,randomizer);
+                Cell cell = new Cell(loc,randomizer, probabilities);
                 grid[x][y] = cell;
             }
         }

@@ -15,10 +15,14 @@ public class Simulator {
     //Visuals
     private SimulatorView simView;
 
-    public Simulator(int gridLength, int gridHeight,long seed){
-        grid = new Grid(gridLength,gridHeight,new Randomizer(seed));
-        simView = new SimulatorView(grid);
-        populateCell((gridLength/2),gridHeight/2,1);
+    //Probability distro
+    private Probabilities probabilities;
+
+    public Simulator(int gridLength, int gridHeight,long seed, Probabilities probabilities, int initalPop){
+        this.probabilities = probabilities;
+        grid = new Grid(gridLength,gridHeight,new Randomizer(seed),probabilities);
+        simView = new SimulatorView(grid, initalPop);
+        populateCell((gridLength/2),gridHeight/2,initalPop);
         time = 0;
     }
 
@@ -27,7 +31,7 @@ public class Simulator {
         for(int i = 0; i<steps; i++){
             simulateOneStep();
             try {
-                Thread.sleep(10);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

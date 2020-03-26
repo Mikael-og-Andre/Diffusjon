@@ -7,6 +7,7 @@ public class Cell {
     // list of all particles in that cell
     private ArrayList<Particle> particles;
 
+    private ArrayList<Particle> removeAfter;
 
     //List of cells this cell can move particles to
     private HashMap<Neighbours,Cell> neighbouringCells;
@@ -17,10 +18,13 @@ public class Cell {
     //Randomizer
     private Randomizer randomizer;
 
+    private Probabilities probabilities;
 
-    public Cell(Location loc, Randomizer randomizer){
+
+    public Cell(Location loc, Randomizer randomizer, Probabilities probabilities){
         particles = new ArrayList<>();
         this.randomizer = randomizer;
+        this.probabilities = probabilities;
         neighbouringCells = new HashMap<>();
         this.cellLocation = loc;
     }
@@ -35,19 +39,22 @@ public class Cell {
 
     public void moveParticles(){
 
-        ArrayList<Particle> removeAfter = new ArrayList<>();
+        removeAfter = new ArrayList<>();
+
         for (Particle particle:
              particles) {
             double p = randomizer.getRandom();
-            if (p<=0.5){
-                //Dont move
+            Neighbours neighbourCell = probabilities.getCellSpot(p);
+            if (neighbourCell.equals(Neighbours.MID_MID)){
+                //Stay still
             }
-            else if (p>0.5){
-                moveParticleToRandomNeighbour(particle);
+            else if (checkNeighbour(neighbourCell)){
+                Cell cell = neighbouringCells.get(neighbourCell);
+                cell.addParticle(particle);
                 removeAfter.add(particle);
             }
-            else{
-
+            else {
+                //Cell not there
             }
         }
         for (Particle particle:
@@ -55,13 +62,6 @@ public class Cell {
             particles.remove(particle);
         }
     }
-
-    private void moveParticleToRandomNeighbour(Particle particle) {
-        int neighbourCount = 8;
-        double chance = neighbourCount*randomizer.getRandom();
-        long selected = Math.round(chance);
-    }
-
 
     public void addNeighbouringCell(Neighbours neighbour, Cell cell){
         neighbouringCells.put(neighbour,cell);
@@ -72,11 +72,11 @@ public class Cell {
         moveParticles();
     }
 
-    public boolean checkIfCellInNeighbours(Cell cell){
+    public boolean checkNeighbour(Neighbours neighbour){
         for(Map.Entry<Neighbours, Cell> entry : neighbouringCells.entrySet()) {
             Neighbours key = entry.getKey();
             Cell cellIN = entry.getValue();
-            if (cell.equals(cellIN)){
+            if (key.equals(neighbour)){
                 return true;
             }
         }
