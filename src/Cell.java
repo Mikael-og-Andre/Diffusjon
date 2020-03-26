@@ -39,14 +39,15 @@ public class Cell {
         for (Particle particle:
              particles) {
             double p = randomizer.getRandom();
-            if (p<=0.7){
+            if (p<=0.5){
                 //Dont move
             }
-            else if (p>0.7){
-
+            else if (p>0.5){
+                moveParticleToRandomNeighbour(particle);
+                removeAfter.add(particle);
             }
             else{
-                //System.out.println("Under 0.5");
+
             }
         }
         for (Particle particle:
@@ -55,8 +56,14 @@ public class Cell {
         }
     }
 
+    private void moveParticleToRandomNeighbour(Particle particle) {
+        int neighbourCount = 8;
+        double chance = neighbourCount*randomizer.getRandom();
+        long selected = Math.round(chance);
+    }
+
+
     public void addNeighbouringCell(Neighbours neighbour, Cell cell){
-        //System.out.println(" cell "+cellLocation.getXCord()+" "+cellLocation.getYCord()+"added cell at "+cell.cellLocation.getXCord()+" "+cell.cellLocation.getYCord());
         neighbouringCells.put(neighbour,cell);
     }
 
